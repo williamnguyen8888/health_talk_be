@@ -18,7 +18,7 @@ public class RoleController {
     @Autowired
     IRoleService roleService;
 
-    
+
     @PostMapping
     private ResponseEntity<RoleEntity> createRole(@RequestBody RoleEntity roleEntity) {
         RoleEntity role = roleService.findRoleEntityByRoleName(roleEntity.getRoleName());

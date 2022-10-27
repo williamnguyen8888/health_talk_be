@@ -26,19 +26,19 @@ public class HealthStatsEntity {
     private Long userId;
     private int age;
     private String gender;
-    private float weight;
-    private float height;
-    private float weightTarget;
-    private float bmi;
-    private float bmr;
-    private float tdee;
-    private float idealWeight;
-    private float minWeight;
-    private float maxWeight;
-    private float caloriesIn;
-    private float proteinIn;
-    private float fatIn;
-    private float carbsIn;
+    private double weight;
+    private double height;
+    private double weightTarget;
+    private double bmi;
+    private double bmr;
+    private double tdee;
+    private double idealWeight;
+    private double minWeight;
+    private double maxWeight;
+    private double caloriesIn;
+    private double proteinIn;
+    private double fatIn;
+    private double carbsIn;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
