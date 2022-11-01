@@ -1,5 +1,7 @@
 package com.william.healthytalk.entity.statistics;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.william.healthytalk.entity.user.UserEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -23,7 +25,6 @@ public class HealthStatsEntity {
 
     @NotNull
     @NotBlank
-    private Long userId;
     private int age;
     private String gender;
     private double weight;

@@ -27,9 +27,7 @@ public class RoleEntity {
     @NotBlank
     private Date createdTime;
 
-    @NotNull
-    @NotBlank
-    private Long createdUSer;
+    private int createdUser;
 
     @NotNull
     @NotBlank

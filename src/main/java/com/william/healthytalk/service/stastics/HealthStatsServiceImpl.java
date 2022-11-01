@@ -1,7 +1,7 @@
 package com.william.healthytalk.service.stastics;
 
 import com.william.healthytalk.entity.statistics.HealthStatsEntity;
-import com.william.healthytalk.repository.statistics.IHealthyStatsRopository;
+import com.william.healthytalk.repository.statistics.IHealthyStatsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 @Service
 public class HealthStatsServiceImpl implements IHealthStatsService{
     @Autowired
-    IHealthyStatsRopository healthyStatsRopository;
+    IHealthyStatsRepository healthyStatsRopository;
     @Override
     public Iterable<HealthStatsEntity> findAll() {
         return healthyStatsRopository.findAll();

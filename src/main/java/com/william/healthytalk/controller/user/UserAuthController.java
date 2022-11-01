@@ -32,4 +32,5 @@ public class UserAuthController {
         return new ResponseEntity(userAuthService.findUserEntityByUserName(userEntity.getUserName()),HttpStatus.OK);
     }
 
+
 }

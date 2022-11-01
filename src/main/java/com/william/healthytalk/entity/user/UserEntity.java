@@ -3,6 +3,10 @@ package com.william.healthytalk.entity.user;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.william.healthytalk.entity.Food.FoodCategoryEntity;
+import com.william.healthytalk.entity.Food.FoodStuffEntity;
 import com.william.healthytalk.entity.statistics.HealthStatsEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -80,5 +84,15 @@ public class UserEntity {
     private Set<RoleEntity> roles;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<HealthStatsEntity> healthStats;
+
+    @OneToMany(mappedBy = "CreatedUser", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<FoodCategoryEntity> foodCategoryEntities;
+
+    @OneToMany(mappedBy = "createdUser", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<FoodStuffEntity> foodStuffEntities;
+
 }

@@ -2,13 +2,17 @@ package com.william.healthytalk.controller.statistics;
 
 import com.william.healthytalk.entity.statistics.HealthStatsEntity;
 import com.william.healthytalk.entity.statistics.HealthStatsValue;
+import com.william.healthytalk.entity.user.UserEntity;
 import com.william.healthytalk.method.HealthStatsMethod;
 import com.william.healthytalk.service.stastics.IHealthStatsService;
+import com.william.healthytalk.service.user.IUserAuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")
@@ -17,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 public class HealthStatsController {
     @Autowired
     IHealthStatsService healthStatsService;
+    @Autowired
+    IUserAuthService userAuthService;
     @GetMapping
     private ResponseEntity<HealthStatsEntity> getAll(){
         return new ResponseEntity(healthStatsService.findAll(), HttpStatus.OK);
@@ -28,6 +34,7 @@ public class HealthStatsController {
                                                                 @RequestParam(name = "age") int age)
     {
         HealthStatsEntity healthStatsEntity = new HealthStatsEntity();
+        Optional<UserEntity> userEntity = userAuthService.findById(healthStatsValue.getUserId());
 
         double bmr = HealthStatsMethod.bmrCalculator(gender,healthStatsValue.getWeight(),healthStatsValue.getHeight(), age);
         double bmi = HealthStatsMethod.bmiCalculator(healthStatsValue.getWeight(),healthStatsValue.getWeight());
@@ -59,8 +66,9 @@ public class HealthStatsController {
         healthStatsEntity.setProteinIn(protein_in);
         healthStatsEntity.setFatIn(fat_in);
         healthStatsEntity.setCarbsIn(carb_in);
+        healthStatsEntity.setUser(userEntity.get());
+        log.info("user "+userEntity.get().getUserName()+" updated Health Stastics success");
 
-
-
+        return new ResponseEntity(healthStatsService.save(healthStatsEntity), HttpStatus.OK);
     }
 }

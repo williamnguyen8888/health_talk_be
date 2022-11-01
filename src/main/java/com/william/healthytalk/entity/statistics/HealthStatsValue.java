@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access= AccessLevel.PUBLIC)
 @AllArgsConstructor
 public class HealthStatsValue {
+    private int userId;
     private double weight;
     private double height;
     private String target;
