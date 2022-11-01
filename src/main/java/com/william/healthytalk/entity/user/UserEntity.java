@@ -5,7 +5,9 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.william.healthytalk.entity.Food.DishEntity;
 import com.william.healthytalk.entity.Food.FoodCategoryEntity;
+import com.william.healthytalk.entity.Food.FoodMaterialEntity;
 import com.william.healthytalk.entity.Food.FoodStuffEntity;
 import com.william.healthytalk.entity.statistics.HealthStatsEntity;
 import lombok.AccessLevel;
@@ -95,4 +97,11 @@ public class UserEntity {
     @JsonIgnore
     private Set<FoodStuffEntity> foodStuffEntities;
 
+    @OneToMany(mappedBy = "createdUser", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<DishEntity> dishEntities;
+
+    @OneToMany(mappedBy = "createdUser", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<FoodMaterialEntity> foodMaterialEntities;
 }

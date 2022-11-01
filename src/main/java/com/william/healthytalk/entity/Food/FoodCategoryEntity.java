@@ -35,4 +35,12 @@ public class FoodCategoryEntity {
     @JsonIgnore
     private Set<FoodStuffEntity> foodStuffEntities;
 
+    @OneToMany(mappedBy = "Category", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<DishEntity> dishEntities;
+
+    @OneToMany(mappedBy = "Category", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<FoodMaterialEntity> foodMaterialEntities;
+
 }

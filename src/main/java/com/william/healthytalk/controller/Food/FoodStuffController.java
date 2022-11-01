@@ -28,21 +28,15 @@ public class FoodStuffController {
     IFoodCategoryService foodCategoryService;
 
     @PostMapping
-    private ResponseEntity<FoodStuffEntity> createFoodStuff(@RequestBody FoodStuffEntity foodStuffEntity,
-                                                            @RequestParam(name = "CreatedUser") int CreatedUser,
-                                                            @RequestParam(name = "CategoryId") int CategoryId){
+    private ResponseEntity<FoodStuffEntity> createFoodStuff(@RequestBody FoodStuffEntity foodStuffEntity){
 
         FoodStuffEntity foodStuffEn = foodStuffService.findFoodStuffEntityByNameEn(foodStuffEntity.getNameEn());
         FoodStuffEntity foodStuffVi = foodStuffService.findFoodStuffEntityByNameVi(foodStuffEntity.getNameVi());
 
-        Optional<UserEntity> userEntity = userAuthService.findById(CreatedUser);
-        FoodCategoryEntity foodCategoryEntity = foodCategoryService.findFoodCategoryEntityById(CategoryId);
-
         if (foodStuffEn != null || foodStuffVi != null){
             return new ResponseEntity(null, HttpStatus.CONFLICT);
         }
-        foodStuffEntity.setCreatedUser(userEntity.get());
-        foodStuffEntity.setCategory(foodCategoryEntity);
+
         return new ResponseEntity(foodStuffService.save(foodStuffEntity),HttpStatus.OK);
     }
 

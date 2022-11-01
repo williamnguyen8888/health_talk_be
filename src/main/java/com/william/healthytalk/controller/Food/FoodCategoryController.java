@@ -24,15 +24,14 @@ public class FoodCategoryController {
     IUserAuthService userAuthService;
 
     @PostMapping
-    private ResponseEntity<FoodCategoryEntity> createFoodCategory(@RequestBody FoodCategoryEntity foodCategoryEntity,
-                                                                  @RequestParam(name = "CreatedUser") int CreatedUser){
+    private ResponseEntity<FoodCategoryEntity> createFoodCategory(@RequestBody FoodCategoryEntity foodCategoryEntity){
         FoodCategoryEntity foodCategoryNameEn = foodCategoryService.findFoodCategoryEntityByNameEn(foodCategoryEntity.getNameEn());
         FoodCategoryEntity foodCategoryNameVi = foodCategoryService.findFoodCategoryEntityByNameVi(foodCategoryEntity.getNameVi());
-        Optional<UserEntity> userEntity = userAuthService.findById(CreatedUser);
+
         if (foodCategoryNameEn != null || foodCategoryNameVi != null){
             return new ResponseEntity(null, HttpStatus.CONFLICT);
         }
-        foodCategoryEntity.setCreatedUser(userEntity.get());
+
         return new ResponseEntity(foodCategoryService.save(foodCategoryEntity), HttpStatus.OK);
     }
 

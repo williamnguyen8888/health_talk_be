@@ -1,11 +1,11 @@
 package com.william.healthytalk.entity.Food;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.william.healthytalk.entity.user.UserEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -14,8 +14,8 @@ import java.util.Set;
 @NoArgsConstructor(access= AccessLevel.PUBLIC)
 @AllArgsConstructor
 @Entity
-@Table(name = "FoodStuff")
-public class FoodStuffEntity {
+@Table(name = "FoodMaterial")
+public class FoodMaterialEntity {
     @Id
     @org.springframework.data.annotation.Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,25 +23,23 @@ public class FoodStuffEntity {
 
     private String nameEn;
     private String nameVi;
-
     @ManyToOne
     @JoinColumn(name = "FoodCategory_id")
     private FoodCategoryEntity Category;
-
-    private String imageFoodStuff;
+    private String image;
     private String description;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity createdUser;
+    private String isActive;
 
-    private Boolean isActive;
+    @ManyToMany(mappedBy = "foodMaterial")
+    private Set<DishEntity> dish;
 
-    @ManyToMany
-    @JoinTable(name="foodStuff_foodMaterial", joinColumns =@JoinColumn(name = "foodStuff_id"), inverseJoinColumns = @JoinColumn(name="foodMaterial_id"))
-    private Set<FoodMaterialEntity> foodMaterial;
+    @ManyToMany(mappedBy = "foodMaterial")
+    private Set<FoodStuffEntity> foodStuff;
 
-    @OneToMany(mappedBy = "foodStuff", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "foodMaterial", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<NutritionValueEntity> nutritionValueEntities;
 }
