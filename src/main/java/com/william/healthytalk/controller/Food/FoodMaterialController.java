@@ -21,7 +21,7 @@ public class FoodMaterialController {
     private ResponseEntity<FoodMaterialEntity> createFoodMateial(@RequestBody FoodMaterialEntity foodMaterial){
         FoodMaterialEntity foodMaterialNameEn = foodMaterialService.findFoodMaterialEntityByNameEn(foodMaterial.getNameEn());
         FoodMaterialEntity foodMaterialNameVi = foodMaterialService.findFoodMaterialEntityByNameVi(foodMaterial.getNameVi());
-        if (foodMaterialNameVi != null && foodMaterialNameEn != null){
+        if (foodMaterialNameVi != null || foodMaterialNameEn != null){
             return new ResponseEntity(null, HttpStatus.CONFLICT);
         }
         return new ResponseEntity(foodMaterialService.save(foodMaterial),HttpStatus.OK);

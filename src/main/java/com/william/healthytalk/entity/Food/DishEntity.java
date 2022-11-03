@@ -1,14 +1,16 @@
 package com.william.healthytalk.entity.Food;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.william.healthytalk.entity.user.RoleEntity;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.william.healthytalk.entity.user.UserEntity;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -24,20 +26,26 @@ public class DishEntity {
 
     private String nameEn;
     private String nameVi;
+
     @ManyToOne
     @JoinColumn(name = "FoodCategory_id")
-    private FoodCategoryEntity Category;
+    @JsonBackReference (value = "DishEntity-FoodCategoryEntity")
+    private FoodCategoryEntity category;
+
     private String imageDish;
     private String description;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference(value = "DishEntity-UserEntity")
     private UserEntity createdUser;
     private String isActive;
+
     @ManyToMany
-    @JoinTable(name="dish_foodMaterial", joinColumns =@JoinColumn(name = "dish_id"), inverseJoinColumns = @JoinColumn(name="foodMaterial_id"))
-    private Set<FoodMaterialEntity> foodMaterial;
+    @JoinTable
+    private  Collection<FoodMaterialEntity> foodMaterial;
 
     @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private Set<NutritionValueEntity> nutritionValueEntities;
+    @JsonManagedReference(value = "DishEntity-NutritionValueEntity")
+    private Collection<NutritionValueEntity> nutritionValueEntities;
 }

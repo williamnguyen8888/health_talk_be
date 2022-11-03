@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Set;
 
@@ -38,6 +39,6 @@ public class RoleEntity {
     private boolean isActive;
 
     @ManyToMany(mappedBy = "roles")
-    private Set<UserEntity> users;
+    private Collection<UserEntity> users;
 
 }

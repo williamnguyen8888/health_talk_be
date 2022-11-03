@@ -1,5 +1,7 @@
 package com.william.healthytalk.entity.Food;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,14 +22,17 @@ public class NutritionValueEntity {
 
     @ManyToOne
     @JoinColumn(name = "FoodStuff_id")
+    @JsonBackReference(value = "FoodStuffEntity-NutritionValueEntity")
     private FoodStuffEntity foodStuff;
 
     @ManyToOne
     @JoinColumn(name = "Dish_id")
+    @JsonBackReference(value = "DishEntity-NutritionValueEntity")
     private DishEntity dish;
 
     @ManyToOne
     @JoinColumn(name = "FoodMaterial_id")
+    @JsonBackReference(value = "FoodMaterialEntity-NutritionValueEntity")
     private FoodMaterialEntity foodMaterial;
 
     private String unit;
