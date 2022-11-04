@@ -1,11 +1,20 @@
 package com.william.healthytalk.controller.user;
 
+import com.william.healthytalk.config.JWT.JwtTokenProvider;
+import com.william.healthytalk.entity.user.UserDetails;
 import com.william.healthytalk.entity.user.UserEntity;
 import com.william.healthytalk.service.user.IUserAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import javax.validation.Valid;
 
 @RestController
 @CrossOrigin("*")
@@ -13,6 +22,13 @@ import org.springframework.web.bind.annotation.*;
 public class UserAuthController {
     @Autowired
     private IUserAuthService userAuthService;
+
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    @Autowired
+    JwtTokenProvider tokenProvider;
+
 
     @PutMapping
     private ResponseEntity<UserEntity> createUser(@RequestBody UserEntity userEntity){
@@ -24,12 +40,44 @@ public class UserAuthController {
     }
 
     @PostMapping
-    private ResponseEntity<UserEntity> loginUser(@RequestBody UserEntity userEntity){
-        Boolean user = userAuthService.existsUserEntitiesByUserNameAndPassword(userEntity.getUserName(), userEntity.getPassword());
-        if(!user){
+    private ResponseEntity<String> loginUser(@RequestBody UserEntity userEntity){
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        UserEntity user = userAuthService.findUserEntityByUserName(userEntity.getUserName());
+
+        if(user == null){
             return new ResponseEntity(null, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity(userAuthService.findUserEntityByUserName(userEntity.getUserName()),HttpStatus.OK);
+
+        // kiem tra pass cua nguoi dung nhap va trong db co giong nhau khong
+        Boolean checkPassword = passwordEncoder.matches(userEntity.getPassword(),user.getPassword());
+
+        if(!checkPassword){
+            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+        }
+
+        // Xác thực từ username và password.
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        userEntity.getUserName(),
+                        userEntity.getPassword()
+                )
+        );
+
+        // Nếu không xảy ra exception tức là thông tin hợp lệ
+        // Set thông tin authentication vào Security Context
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // Trả về jwt cho người dùng.
+        String jwt = tokenProvider.generateToken((UserDetails) authentication.getPrincipal());
+        return new ResponseEntity(jwt, HttpStatus.OK);
+
+//        Boolean user = userAuthService.existsUserEntitiesByUserNameAndPassword(userEntity.getUserName(), userEntity.getPassword());
+//        if(!user){
+//            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+//        }
+//        return new ResponseEntity(userAuthService.findUserEntityByUserName(userEntity.getUserName()),HttpStatus.OK);
+
     }
 
 

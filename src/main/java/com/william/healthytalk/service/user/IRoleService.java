@@ -1,8 +1,10 @@
 package com.william.healthytalk.service.user;
 
 import com.william.healthytalk.entity.user.RoleEntity;
+import com.william.healthytalk.entity.user.UserEntity;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public interface IRoleService {
@@ -12,4 +14,6 @@ public interface IRoleService {
     int deleteRoleEntityById(int id);
 
     RoleEntity findRoleEntityByRoleName(String roleName);
+
+    List<RoleEntity> findAllByUsers(UserEntity userEntity);
 }

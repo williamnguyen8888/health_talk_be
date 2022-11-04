@@ -1,12 +1,14 @@
 package com.william.healthytalk.service.user;
 
 import com.william.healthytalk.entity.user.RoleEntity;
+import com.william.healthytalk.entity.user.UserEntity;
 import com.william.healthytalk.repository.user.IRoleRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -48,5 +50,10 @@ public class RoleServiceImpl implements IRoleService{
     @Override
     public RoleEntity findRoleEntityByRoleName(String roleName) {
         return roleRepository.findRoleEntityByRoleName(roleName);
+    }
+
+    @Override
+    public List<RoleEntity> findAllByUsers(UserEntity userEntity) {
+        return roleRepository.findAllByUsers(userEntity);
     }
 }
