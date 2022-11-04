@@ -4,6 +4,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.william.healthytalk.entity.Food.DishEntity;
 import com.william.healthytalk.entity.Food.FoodCategoryEntity;
@@ -83,7 +85,8 @@ public class UserEntity {
     private Boolean isActive;
 
     @ManyToMany
-    @JoinTable(name="user_role", joinColumns =@JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name="role_id"))
+    @JoinTable
+    @JsonIgnore
     private  Collection<RoleEntity> roles;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
