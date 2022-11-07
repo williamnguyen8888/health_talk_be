@@ -1,6 +1,7 @@
 package com.william.healthytalk.controller.user;
 
 import com.william.healthytalk.config.JWT.JwtTokenProvider;
+import com.william.healthytalk.entity.LoginResponse;
 import com.william.healthytalk.entity.user.UserDetails;
 import com.william.healthytalk.entity.user.UserEntity;
 import com.william.healthytalk.service.user.IUserAuthService;
@@ -15,11 +16,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.validation.Valid;
+import java.io.Serializable;
 
 @RestController
 @CrossOrigin("*")
 @RequestMapping("api/user-auth")
-public class UserAuthController {
+public class UserAuthController implements Serializable {
     @Autowired
     private IUserAuthService userAuthService;
 
@@ -40,7 +42,7 @@ public class UserAuthController {
     }
 
     @PostMapping
-    private ResponseEntity<String> loginUser(@RequestBody UserEntity userEntity){
+    private ResponseEntity<LoginResponse> loginUser(@RequestBody UserEntity userEntity){
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         UserEntity user = userAuthService.findUserEntityByUserName(userEntity.getUserName());
@@ -66,17 +68,14 @@ public class UserAuthController {
 
         // Nếu không xảy ra exception tức là thông tin hợp lệ
         // Set thông tin authentication vào Security Context
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        user.setPassword("");
 
         // Trả về jwt cho người dùng.
         String jwt = tokenProvider.generateToken((UserDetails) authentication.getPrincipal());
-        return new ResponseEntity(jwt, HttpStatus.OK);
+        return new ResponseEntity(new LoginResponse(user,jwt), HttpStatus.OK);
 
-//        Boolean user = userAuthService.existsUserEntitiesByUserNameAndPassword(userEntity.getUserName(), userEntity.getPassword());
-//        if(!user){
-//            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
-//        }
-//        return new ResponseEntity(userAuthService.findUserEntityByUserName(userEntity.getUserName()),HttpStatus.OK);
 
     }
 
