@@ -4,6 +4,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -18,6 +19,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Set;
@@ -74,7 +76,7 @@ public class UserEntity {
 
     @NotNull
     @NotBlank
-    private Long createdUSer;
+    private Long createdUser;
 
     @NotNull
     @NotBlank
@@ -84,10 +86,10 @@ public class UserEntity {
     @NotBlank
     private Boolean isActive;
 
-    @ManyToMany
-    @JoinTable
-    @JsonIgnore
-    private  Collection<RoleEntity> roles;
+    @ManyToOne
+//    @JsonBackReference(value = "RoleEntity-UserEntity")
+    @JoinColumn(name = "role_id")
+    private  RoleEntity roles;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference(value = "HealthStatsEntity-UserEntity")

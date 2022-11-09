@@ -51,16 +51,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http.httpBasic().disable();
-//        http.csrf().disable();
+//        http.cors().disable();
+        http.csrf().disable();
         http
+                .cors().and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .cors()
-                .and()
-                .csrf()
-                .disable()
                 .authorizeRequests()
                 .antMatchers("/api/user-auth").permitAll() // Cho phép tất cả mọi người truy cập vào địa chỉ này
                 .anyRequest().authenticated(); // Tất cả các request khác đều cần phải xác thực mới được truy cập

@@ -16,4 +16,5 @@ public interface IRoleService {
     RoleEntity findRoleEntityByRoleName(String roleName);
 
     List<RoleEntity> findAllByUsers(UserEntity userEntity);
+    RoleEntity findRoleEntityByUsers(UserEntity userEntity);
 }

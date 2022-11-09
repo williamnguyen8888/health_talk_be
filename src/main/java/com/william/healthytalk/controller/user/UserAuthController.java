@@ -2,8 +2,10 @@ package com.william.healthytalk.controller.user;
 
 import com.william.healthytalk.config.JWT.JwtTokenProvider;
 import com.william.healthytalk.entity.LoginResponse;
+import com.william.healthytalk.entity.user.RoleEntity;
 import com.william.healthytalk.entity.user.UserDetails;
 import com.william.healthytalk.entity.user.UserEntity;
+import com.william.healthytalk.service.user.IRoleService;
 import com.william.healthytalk.service.user.IUserAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,12 +26,13 @@ import java.io.Serializable;
 public class UserAuthController implements Serializable {
     @Autowired
     private IUserAuthService userAuthService;
-
     @Autowired
     AuthenticationManager authenticationManager;
-
     @Autowired
     JwtTokenProvider tokenProvider;
+
+    @Autowired
+    IRoleService roleService;
 
 
     @PutMapping
@@ -46,7 +49,6 @@ public class UserAuthController implements Serializable {
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         UserEntity user = userAuthService.findUserEntityByUserName(userEntity.getUserName());
-
         if(user == null){
             return new ResponseEntity(null, HttpStatus.NOT_FOUND);
         }
@@ -68,14 +70,14 @@ public class UserAuthController implements Serializable {
 
         // Nếu không xảy ra exception tức là thông tin hợp lệ
         // Set thông tin authentication vào Security Context
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        // lấy thông tin role
+        RoleEntity role = roleService.findRoleEntityByUsers(user);
+        role.setUsers(null);
         user.setPassword("");
-
         // Trả về jwt cho người dùng.
         String jwt = tokenProvider.generateToken((UserDetails) authentication.getPrincipal());
-        return new ResponseEntity(new LoginResponse(user,jwt), HttpStatus.OK);
-
+        return new ResponseEntity(new LoginResponse(user,role,jwt), HttpStatus.OK);
 
     }
 

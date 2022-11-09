@@ -56,4 +56,9 @@ public class RoleServiceImpl implements IRoleService{
     public List<RoleEntity> findAllByUsers(UserEntity userEntity) {
         return roleRepository.findAllByUsers(userEntity);
     }
+
+    @Override
+    public RoleEntity findRoleEntityByUsers(UserEntity userEntity) {
+        return roleRepository.findRoleEntityByUsers(userEntity);
+    }
 }

@@ -58,7 +58,7 @@ public class RoleController {
     }
 
     @PostMapping("/userRole")
-    private ResponseEntity<List<RoleEntity>> findRolesUser(@RequestBody UserEntity userEntity){
-        return new ResponseEntity(roleService.findAllByUsers(userEntity),HttpStatus.OK);
+    private ResponseEntity<RoleEntity> findRolesUser(@RequestBody UserEntity userEntity){
+        return new ResponseEntity(roleService.findRoleEntityByUsers(userEntity),HttpStatus.OK);
     }
 }

@@ -1,5 +1,6 @@
 package com.william.healthytalk.entity;
 
+import com.william.healthytalk.entity.user.RoleEntity;
 import com.william.healthytalk.entity.user.UserEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -9,11 +10,13 @@ import lombok.NoArgsConstructor;
 @Data
 public class LoginResponse {
     private String accessToken;
-    private String tokenType = "Bearer";
+    private String tokenType = "Bearer ";
     private UserEntity user;
+    private RoleEntity role;
 
-    public LoginResponse(UserEntity user,String accessToken) {
-        this.accessToken = accessToken;
+    public LoginResponse(UserEntity user,RoleEntity role ,String accessToken) {
+        this.accessToken = tokenType + accessToken;
         this.user = user;
+        this.role = role;
     }
 }

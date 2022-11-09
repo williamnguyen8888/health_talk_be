@@ -11,4 +11,6 @@ public interface IRoleRepository extends CrudRepository<RoleEntity, Integer> {
     RoleEntity findRoleEntityByRoleName(String roleName);
 
     List<RoleEntity> findAllByUsers(UserEntity userEntity);
+
+    RoleEntity findRoleEntityByUsers(UserEntity userEntity);
 }
